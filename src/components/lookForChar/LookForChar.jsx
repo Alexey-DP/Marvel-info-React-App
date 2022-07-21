@@ -11,7 +11,7 @@ const LookForChar = () => {
 
     const [char, setChar] = useState(null);
 
-    const {loading, error, getCharacterByName, clearError} = useMarvelService();
+    const { operation, setOperation, getCharacterByName, clearError} = useMarvelService();
 
     const onCharLoaded = (char) => {
         setChar(char);
@@ -21,10 +21,11 @@ const LookForChar = () => {
         clearError();
 
         getCharacterByName(name)
-            .then(onCharLoaded);
+            .then(onCharLoaded)
+            .then(() => setOperation('success'));
     }
 
-    const errorMessage = error ? <div className="char__search-critical-error"><ErrorMessage /></div> : null;
+    const errorMessage = operation === 'error' ? <div className="char__search-critical-error"><ErrorMessage /></div> : null;
     const results = !char ? null : char.length > 0 ?
                     <div className="char__search-wrapper">
                         <div className="char__search-success">There is! Visit {char[0].name} page?</div>
@@ -60,7 +61,7 @@ const LookForChar = () => {
                         <button
                             type='submit'
                             className="button button__main"
-                            disabled={loading}>
+                            disabled={operation === 'loading'}>
                             <div className="inner">find</div>
                         </button>
                     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import useMarvelService from '../../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
@@ -15,16 +15,18 @@ const  CharList = ({onCharSelected}) => {
     const [offset, setOffset] = useState(200);
     const [charEnded, setCharEnded] = useState(false);
 
-    const {loading, error, getAllCharacter} = useMarvelService();
+    const {operation, setOperation, getAllCharacter} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onRequest = (offset, initial) => {
         initial ? setItemLoading(false) : setItemLoading(true);
         getAllCharacter(offset)
             .then(onCharsLoaded)
+            .then(() => setOperation('success'));
     }
 
     const onCharsLoaded = (newChars) => {
@@ -53,7 +55,6 @@ const  CharList = ({onCharSelected}) => {
             const {name, id, thumbnail} = item;
             const charName = name.length > 28 ? `${name.slice(0, 28)}...` : name;
             const style = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit: 'unset'} : {};
-
             return (
                 <CSSTransition
                 key={id}
@@ -92,9 +93,13 @@ const  CharList = ({onCharSelected}) => {
         )
     }
 
-    const items = renderItem(chars);
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+    const items = useMemo(() => {
+        return renderItem(chars);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [chars]);
+
+    const errorMessage = operation === 'error' ? <ErrorMessage/> : null;
+    const spinner = operation === 'loading' && !newItemLoading ? <Spinner/> : null;
 
         return (
             <div className="char__list">

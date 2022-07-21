@@ -14,16 +14,18 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const { loading, error, getAllComics } = useMarvelService();
+    const { operation, setOperation, getAllComics } = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onRequest = (offset, initial) => {
         initial ? setComicsLoading(false) : setComicsLoading(true);
         getAllComics(offset)
             .then(onComicsLoaded)
+            .then(() => setOperation('success'));
     }
 
     const onComicsLoaded = (newComics) => {
@@ -85,8 +87,8 @@ const ComicsList = () => {
     }
 
     const items = renderItem(comicses);
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading && !newComicsLoading ? <Spinner /> : null;
+    const errorMessage = operation === 'error' ? <ErrorMessage /> : null;
+    const spinner = operation === 'loading' && !newComicsLoading ? <Spinner /> : null;
 
     return (
         <div className="comics__list">

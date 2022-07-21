@@ -2,8 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import useMarvelService from '../../services/MarvelServices';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 import AppBanner from "../appBanner/AppBanner";
 
 const ResponsivePage = ({ Component, dataType }) => {
@@ -11,10 +10,11 @@ const ResponsivePage = ({ Component, dataType }) => {
     const [data, setData] = useState(null);
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
-    const { loading, error, getComics, getCharacter, clearError } = useMarvelService();
+    const { operation, setOperation, getComics, getCharacter, clearError } = useMarvelService();
 
     useEffect(() => {
         updateData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
 
     const updateData = () => {
@@ -26,14 +26,14 @@ const ResponsivePage = ({ Component, dataType }) => {
                     onDataLoaded(data);
                     setDescription(data?.description);
                     setTitle(data?.name);
-                });
+                }).then(() => setOperation('success'));
                 break;
             case 'character':
                 getCharacter(id).then(data => {
                     onDataLoaded(data);
                     setDescription(data?.description || "The best marvel's character");
                     setTitle(data?.name);
-                });
+                }).then(() => setOperation('success'));
                 break;
             default: return null;
         }
@@ -42,10 +42,6 @@ const ResponsivePage = ({ Component, dataType }) => {
     const onDataLoaded = (data) => {
         setData(data);
     }
-
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || !data) ? <Component data={data} /> : null;
 
     return (
         <>
@@ -57,9 +53,7 @@ const ResponsivePage = ({ Component, dataType }) => {
                 <title>{title}</title>
             </Helmet>
             <AppBanner />
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(operation, Component, data)}
         </>
     )
 }
