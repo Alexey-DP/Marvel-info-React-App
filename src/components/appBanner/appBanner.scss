@@ -1,0 +1,35 @@
+@import '../../style/variables.scss';
+
+.app {
+    &__banner {
+        width: 100%;
+        background-color: $dark;
+        height: 100px;
+        padding: 0 25px 0 45px;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        justify-content: space-between;
+        &-text {
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 32px;
+            color: #FFFFFF;
+            padding-top: 18px;
+        }
+    }
+}
+
+@media(max-width: 644px) {
+    .app {
+        &__banner {
+            height: 80px;
+            padding: 0 10px 0 10px;
+            img {
+                width: 100%;
+            }
+            &-text {
+                display: none;
+            }
+        }
+    }
+}

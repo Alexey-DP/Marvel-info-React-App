@@ -1,0 +1,51 @@
+@import '../../../style/variables.scss';
+
+.single-comic {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px 10px;
+    justify-items: start;
+    &__img {
+        width: 293px;
+        height: 450px;
+    }
+    &__name {
+        font-weight: bold;
+        font-size: 22px;
+        line-height: 29px;
+    }
+    &__descr {
+        font-size: 18px;
+        line-height: 24px;
+        margin-top: 25px;
+    }
+    &__price {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
+        color: $main-color;
+        margin-top: 25px;
+    }
+    &__back {
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 24px;
+        transition: color .3s;
+        &:hover {
+            color: $main-color;
+            transition: color .3s;
+        }
+    }
+}
+
+@media(max-width: 644px) {
+    .single-comic {
+        grid-template-columns: none;
+        grid-template-rows: auto;
+        justify-items: center;
+        &__descr {
+            margin-top: 10px;
+        }
+    }
+}
