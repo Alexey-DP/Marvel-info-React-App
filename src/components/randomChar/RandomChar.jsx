@@ -3,7 +3,6 @@ import useMarvelService from '../../services/MarvelServices';
 import setContent from '../../utils/setContent';
 
 import './randomChar.scss';
-import mjolnir from '../../resources/img/mjolnir.png';
 
 const RandomChar = () => {
 
@@ -41,7 +40,6 @@ const RandomChar = () => {
                 <button className="button button__main" onClick={updateChar}>
                     <div className="inner">try it</div>
                 </button>
-                <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
             </div>
         </div>
     )

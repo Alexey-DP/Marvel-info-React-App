@@ -4,6 +4,9 @@
     &__content {
         margin-top: 50px;
         display: grid;
+        background-image: url('../../resources//img/vision.png');
+        background-repeat: no-repeat;
+        background-position: top 10px right 10px;
         grid-template-columns: 2fr 1fr;
         grid-template-rows: auto;
         grid-template-areas:
@@ -95,6 +98,7 @@
 @media(max-width: 866px) {
     .char {
         &__content {
+            background-image: none;
             grid-template-areas:
             "list"
             "info"
