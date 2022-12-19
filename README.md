@@ -1,4 +1,4 @@
-## Marvel info React App
+## Marvel info React App https://marvel-info.netlify.app/
 
 ### The application is running on port 3006 (npm start)
 
